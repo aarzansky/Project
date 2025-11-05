@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            display: flex;
+            flex-direction: column;
+        }
+        .hero{
+            background: url(https://ssbhealthcare.com/wp-content/uploads/2023/06/close-up-patient-with-tubes-her-arm-squeezing-ball-her-hand-while-donating-blood_1200x800.jpg);
+            width: 100%;
+            height: 540px;
+            z-index: 2;
+            filter: blur(100);
+        }
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 111%;
+            background: rgba(4, 45, 134, 0.5); 
+            z-index: 1;
+        }
+        nav{
+            position: sticky;
+            top:0px;
+            display:flex;
+            flex-direction: row;
+            background-color: white;
+            height: 4rem;
+            z-index: 4;
+            justify-content: center;
+            align-items: center;
+        }
+        .Registration{
+            position: absolute;
+            right: 3rem;
+        }
+        .Links{
+            display: flex;
+            gap:2rem;
+        }
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            color: white;
+            z-index: 3;
+            text-align: center;
+            font-size: 2rem;
+        }
+        .content p{
+            font-size: 1.5rem;
+        }
+        .Links a{
+            text-decoration: none;
+            color: black;
+        }
+        .Registration a {
+            text-decoration: none;
+            border: solid 2px rgb(199, 48, 48);
+            border-radius: 50px;
+            color: rgb(199, 48, 48);
+            padding: 5px;
+            transition: 0.2s;
+        }
+        .Registration a:hover{
+            border: solid 2px white;
+            border-radius: 50px;
+            background-color: rgb(199, 48, 48);
+            color: white;
+            padding: 5px;
+        }
+        #Register{
+            background-color: rgb(199, 48, 48);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            height: auto;
+            width: auto;
+            padding: 1rem;
+            text-decoration: none;
+            font-size: 60%;
+            transition: 0.5 ease;
+            z-index: 0;
+        }   
+        #Register:hover{
+            box-shadow: inset 0px 2px 4px rgb(0,0,0,0.5);
+        }
+        .provide h1, .working h1, footer h1{
+            color:#245E96;
+            text-align: center;
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            padding: 2rem;
+            }
+        .card {
+            background-color: rgb(245, 206, 206);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            overflow: hidden;
+            width: 300px;
+            height: 300px;
+            text-align: center;
+            }
+            .card img{
+                height:30%;
+                width: auto;
+            }
+            .card p{
+                font-size: 1.3rem;
+            }
+            .Donor{
+                text-align: center;
+                background: url(https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/182FF/production/_107317099_blooddonor976.jpg);
+                height:20rem;
+            }
+            .Donor::after{
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 111%;
+            background: rgba(4, 45, 134, 0.5); 
+            z-index: 1;
+            }
+            .contact{
+                background-color: rgb(199, 48, 48);
+
+            }
+        </style>
+</head>
+<body>
+    <div class="container">
+          <nav>
+            <div class="Links">
+                <a href="landing.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="working.hmtl">How it works</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="Registration">
+                <a href="Login.html">Login</a>
+                <a href="Register.html">Sign Up</a>
+            </div>
+        </nav>
+        <div class="hero">
+        <div class="content">
+                <h1>Connecting donors with those in need</h1>
+                <p>This is a site helping hospitals and patients connect with suitable blood donors in case of emergencies. </p>
+                <br>
+            <a name="Register" id="Register" href="Register.html">Register</a>
+            </div>
+        </div>
+        <br><br>
+        <div class="provide" style="margin-top: 10%";>
+            <h1>What we provide</h1>
+            <div class="card-container">
+                <div class="card">
+                    <br><br>
+                    <img src="Pics/mail.png" alt="SMS">
+                    <h2>SMS Alerts</h2>
+                    <p>Instant updates to keep donors and hospitals informed.</p>
+                </div>
+                <div class="card">
+                    <br><br>
+                    <img src="Pics/clock.png" alt="Fast Delivery">
+                    <h2>Quick Response</h2>
+                    <p>Fast and efficient donor–hospital connections.</p>
+                </div>
+                <div class="card">
+                    <br><br>
+                    <img src="Pics/shield.png" alt="Secure">
+                    <h2>Secure Access</h2>
+                    <p>Safe platform for verified hospitals and registered donors.</p>
+                </div>
+            </div>
+        </div>
+        <div class="working" style="margin-top: 10%;">
+                    <h1>How it works</h1>
+                    
+        </div>
+        <footer>
+            <div class="Donor">
+                <h1>Join our community today</h1>
+                <p>Get ready to save lives. Register as donors ready to volunteer or healthcare institutions in need of blood.</p>
+                <a href="Register.html" id="Register">Register</a>
+            </div>
+            <div class="contact">
+
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

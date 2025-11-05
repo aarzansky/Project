@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    .container{
+      display: flex;
+      flex-direction: row;
+    }
+    .Title{
+      position: absolute;
+      top: 40%;
+      left:30%;
+      transform: translate(-50%,-50%);
+      border: solid black;
+    }
+    .box{
+      position: absolute;
+      top: 45%;
+      left:70%;
+      transform: translate(-50%,-50%);
+      width: 15rem;
+      height: 15rem;
+      border: solid rgba(109, 109, 109, 0.3)1px;
+      border-radius: 5%;
+      padding: 1rem;
+      background-color: white;
+      text-align: center;
+    }
+    .box h2{
+      text-align: center;
+    }
+    .box form{
+      display:flex;
+      gap:1rem;
+      flex-direction: column;
+    }
+    input{
+      height: 1.5rem;
+      border-radius: 10%;
+      border-style: solid;
+      border-color: rgba(109, 109, 109, 0.3);
+    }
+    body{
+      background-color: whitesmoke;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="Title">
+      <h1>Donate Blood</h1>
+      <h1>Save Life</h1>
+      <p>Log into ____ now. Become a member and help save lives.</p>
+    </div>
+    <div class="box2">
+    <div class="box">
+      <h2>Login</h2>
+      <form method="post">
+        <div>
+           <input type="email" name="email" placeholder="Email Address" required>
+        </div>
+       <div>
+        <input type="password" name="Password" placeholder="Password" required>
+       </div>
+        <input type="submit" value="Login">
+      </form>
+      <div class="links">
+        <p>Don't have an account?</p>
+        <a href="Register.html">Sign Up</a>
+      </div>
+    </div>
+    </div>
+  </div>
+
+</body>
+</html>
