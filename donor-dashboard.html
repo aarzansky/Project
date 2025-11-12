@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Dashboard - Blood Donor Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            height: 4rem;
+            padding: 0 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #c73030;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a.active {
+            color: #c73030;
+        }
+
+        .nav-links a:hover {
+            color: #c73030;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-logout {
+            background-color: #c73030;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background-color: #a52525;
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h1 {
+            color: #245E96;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .donor-info h2 {
+            color: #245E96;
+            margin-bottom: 0.5rem;
+        }
+
+        .blood-badge {
+            background-color: #c73030;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Request Cards */
+        .section-title {
+            color: #245E96;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .requests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .request-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .request-header {
+            padding: 1rem 1.5rem;
+            background-color: #245E96;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .request-urgency {
+            background-color: #c73030;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .request-body {
+            padding: 1.5rem;
+        }
+
+        .request-detail {
+            margin-bottom: 0.8rem;
+            display: flex;
+        }
+
+        .request-detail strong {
+            width: 120px;
+            color: #245E96;
+        }
+
+        .request-actions {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e1e1e1;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-primary {
+            background-color: #c73030;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #a52525;
+        }
+
+        .btn-disabled {
+            background-color: #cccccc;
+            color: #666;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: not-allowed;
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-brand">BloodConnect</div>
+        <div class="nav-links">
+            <a href="#" class="active">Dashboard</a>
+            <a href="#">My Profile</a>
+            <a href="#">Donation History</a>
+        </div>
+        <div class="user-info">
+            <span>John Doe</span>
+            <button class="btn-logout">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <div class="dashboard-header">
+            <h1>Donor Dashboard</h1>
+            <p>View blood requests and help save lives</p>
+        </div>
+
+        <div class="welcome-card">
+            <div class="donor-info">
+                <h2>Welcome back, John!</h2>
+                <p>Thank you for being a life-saver. Here are the current blood requests matching your blood type.</p>
+            </div>
+            <div class="blood-badge">O+</div>
+        </div>
+
+        <h2 class="section-title">Matching Blood Requests</h2>
+        <div class="requests-grid">
+            <div class="request-card">
+                <div class="request-header">
+                    <h3>Emergency: O+ Blood Needed</h3>
+                    <span class="request-urgency">URGENT</span>
+                </div>
+                <div class="request-body">
+                    <div class="request-detail">
+                        <strong>Hospital:</strong> Kathmandu Medical College
+                    </div>
+                    <div class="request-detail">
+                        <strong>Location:</strong> Sinamangal, Kathmandu
+                    </div>
+                    <div class="request-detail">
+                        <strong>Units Needed:</strong> 3
+                    </div>
+                    <div class="request-detail">
+                        <strong>Contact:</strong> 01-1234567
+                    </div>
+                    <div class="request-detail">
+                        <strong>Posted:</strong> 2 hours ago
+                    </div>
+                </div>
+                <div class="request-actions">
+                    <button class="btn-primary">I Can Donate</button>
+                </div>
+            </div>
+
+            <div class="request-card">
+                <div class="request-header">
+                    <h3>O+ Blood Required</h3>
+                    <span class="request-urgency">MEDIUM</span>
+                </div>
+                <div class="request-body">
+                    <div class="request-detail">
+                        <strong>Hospital:</strong> Bir Hospital
+                    </div>
+                    <div class="request-detail">
+                        <strong>Location:</strong> Kantipath, Kathmandu
+                    </div>
+                    <div class="request-detail">
+                        <strong>Units Needed:</strong> 2
+                    </div>
+                    <div class="request-detail">
+                        <strong>Contact:</strong> 01-7654321
+                    </div>
+                    <div class="request-detail">
+                        <strong>Posted:</strong> 5 hours ago
+                    </div>
+                </div>
+                <div class="request-actions">
+                    <button class="btn-primary">I Can Donate</button>
+                </div>
+            </div>
+
+            <div class="request-card">
+                <div class="request-header">
+                    <h3>B+ Blood Needed</h3>
+                    <span class="request-urgency">LOW</span>
+                </div>
+                <div class="request-body">
+                    <div class="request-detail">
+                        <strong>Hospital:</strong> Teaching Hospital
+                    </div>
+                    <div class="request-detail">
+                        <strong>Location:</strong> Maharajgunj, Kathmandu
+                    </div>
+                    <div class="request-detail">
+                        <strong>Units Needed:</strong> 1
+                    </div>
+                    <div class="request-detail">
+                        <strong>Contact:</strong> 01-5555555
+                    </div>
+                    <div class="request-detail">
+                        <strong>Posted:</strong> 1 day ago
+                    </div>
+                </div>
+                <div class="request-actions">
+                    <button class="btn-disabled">Not Your Type</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
