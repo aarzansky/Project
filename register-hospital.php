@@ -1,3 +1,46 @@
+<?php
+    include 'connect.php';
+    if(isset($_POST['submit']))
+    {
+        $name = $_POST['hospital_name'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone_number'];
+        $type = $_POST['emergency_contact_person'];
+        $address = $_POST['address'];
+        $city = $_POST['city'];
+        $district = $_POST['district'];
+        
+        $rc_file=$_FILES['registration_certificate'];
+        $rc_filename=$rc_file['name'];
+        $temp_path1=$rc_file['tmp_name'];
+        $new_rc_filename = trim($name).'_'.$rc_filename;
+        $rc_folder = 'certificate/'.$new_rc_filename;
+        move_uploaded_file($temp_path1,$rc_folder);
+
+        $license_file=$_FILES['license_proof'];
+        $license_filename=$license_file['name'];
+        $temp=$license_file['tmp_name'];
+        $new_license_filename = trim($name). '_' .$license_filename;
+        $license_folder='med_license/'.$new_license_filename;
+        move_uploaded_file($temp,$license_folder);
+
+        $password=md5($_POST['log_password']);
+
+        $sql="INSERT INTO hospitals(hospital_name,email,phone_number,emergency_contact_person,address,city,district,registration_certificate,medical_license,log_password)
+        VALUES('$name','$email','$phone','$type','$address','$city','$district','$rc_folder','$license_folder','$password');";
+        $result=mysqli_query($conn,$sql);
+        if($result)
+            {
+                echo "<script>
+                    alert('Your application is being verified');
+                </script>";
+            }   
+        else{
+            echo"Failed to insert into database".mysqli_error($conn);
+        }
+
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +61,6 @@
             background-color: #f8f9fa;
         }
 
-        /* Navigation */
         nav {
             position: sticky;
             top: 0;
@@ -199,7 +241,6 @@
             text-decoration: underline;
         }
 
-        /* Footer */
         footer {
             background-color: #c73030;
             color: white;
@@ -208,7 +249,6 @@
             margin-top: 3rem;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             nav {
                 flex-direction: column;
@@ -250,51 +290,40 @@
         <h2>Hospital Registration</h2>
         <p class="subtitle">Register your medical facility to connect with blood donors</p>
         
-        <form id="hospitalRegisterForm">
+        <form id="hospitalRegisterForm" enctype="multipart/form-data" method="POST"> 
             <div class="form-group">
-                <input type="text" placeholder="Hospital Name" required>
+                <input type="text" placeholder="Hospital Name" required name="hospital_name">
             </div>
             
             <div class="form-group">
-                <input type="email" placeholder="Official Email Address" required>
+                <input type="email" placeholder="Official Email Address" required name="email">
             </div>
             
             <div class="form-row">
                 <div class="form-group">
-                    <input type="tel" placeholder="Phone Number" required>
+                    <input type="tel" placeholder="Phone Number" required name="phone_number">
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="Emergency Contact Person" required>
+                    <input type="text" placeholder="Emergency Contact Person" required name="emergency_contact_person">
                 </div>
             </div>
             
             <div class="form-group">
-                <textarea placeholder="Full Hospital Address" required></textarea>
+                <textarea placeholder="Address" required name="address"></textarea>
             </div>
             
             <div class="form-row">
                 <div class="form-group">
-                    <input type="text" placeholder="City" required>
+                    <input type="text" placeholder="City" name="city" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="District" required>
+                    <input type="text" placeholder="District" name="district" required>
                 </div>
-            </div>
-            
-            <div class="form-group">
-                <select required>
-                    <option value="">Hospital Type</option>
-                    <option value="government">Government Hospital</option>
-                    <option value="private">Private Hospital</option>
-                    <option value="community">Community Health Center</option>
-                    <option value="clinic">Clinic</option>
-                    <option value="other">Other</option>
-                </select>
             </div>
             
             <div class="file-upload">
                 <label>Upload Hospital Registration Certificate</label>
-                <input type="file" accept=".jpg,.jpeg,.png,.pdf" required>
+                <input type="file" accept=".jpg,.jpeg,.png,.pdf" required name="registration_certificate">
                 <small style="color: #666; display: block; margin-top: 0.5rem;">
                     Accepted formats: JPG, PNG, PDF (Max size: 5MB)
                 </small>
@@ -302,13 +331,18 @@
             
             <div class="file-upload">
                 <label>Upload Medical License (if applicable)</label>
-                <input type="file" accept=".jpg,.jpeg,.png,.pdf">
+                <input type="file" accept=".jpg,.jpeg,.png,.pdf" name="medical_license">
                 <small style="color: #666; display: block; margin-top: 0.5rem;">
                     Optional: Upload your medical facility license
                 </small>
             </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="log_password" required>
+            </div>
             
-            <button type="submit" class="btn btn-primary">Register for Verification</button>
+            <button type="submit" class="btn btn-primary" name="submit">Register for Verification</button>
         </form>
         
         <p>Already registered? <a href="login.html">Login here</a></p>
