@@ -108,7 +108,7 @@
             color: white;
         }
 
-        .auth-container {
+        .container {
             max-width: 500px;
             margin: 3rem auto;
             padding: 2.5rem;
@@ -117,26 +117,26 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .auth-container h2 {
+        .container h2 {
             color: #245E96;
             text-align: center;
             margin-bottom: 2rem;
             font-size: 2rem;
         }
 
-        .form-group {
+        .group {
             margin-bottom: 1.5rem;
         }
 
-        .form-group label {
+        .group label {
             display: block;
             margin-bottom: 0.5rem;
             color: #333;
             font-weight: 500;
         }
 
-        .form-group input,
-        .form-group select {
+        .group input,
+        .group select {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #e1e1e1;
@@ -145,13 +145,13 @@
             transition: border-color 0.3s ease;
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
+        .group input:focus,
+        .group select:focus {
             outline: none;
             border-color: #245E96;
         }
 
-        .file-upload {
+        .upload {
             margin: 1.5rem 0;
             padding: 1.5rem;
             background-color: #f8f9fa;
@@ -159,14 +159,14 @@
             border: 2px dashed #e1e1e1;
         }
 
-        .file-upload label {
+        .upload label {
             display: block;
             margin-bottom: 1rem;
             color: #245E96;
             font-weight: 500;
         }
 
-        .file-upload input {
+        .upload input {
             border: none;
             padding: 0;
         }
@@ -196,20 +196,20 @@
             box-shadow: 0 5px 15px rgba(199, 48, 48, 0.3);
         }
 
-        .auth-container p {
+        .container p {
             text-align: center;
             margin-top: 1.5rem;
             color: #666;
         }
 
-        .auth-container a {
+        .container a {
             color: #245E96;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
         }
 
-        .auth-container a:hover {
+        .container a:hover {
             color: #c73030;
             text-decoration: underline;
         }
@@ -237,26 +237,26 @@
         </div>
     </nav>
 
-    <div class="auth-container">
+    <div class="container">
         <h2>Become a Blood Donor</h2>
         <form id="donorRegisterForm" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
+            <div class="group">
                 <input type="text" placeholder="Full Name" name="full_name"required>
             </div>
             
-            <div class="form-group">
+            <div class="group">
                 <input type="email" placeholder="Email" name="email" required>
             </div>
 
-            <div class="form-group">
+            <div class="group">
                 <input type="password" placeholder="password" name="password" required>
             </div>
             
-            <div class="form-group">
+            <div class="group">
                 <input type="tel" placeholder="Phone Number" name="phone_number" required>
             </div>
             
-            <div class="form-group">
+            <div class="group">
                 <select required name="blood_type">
                     <option value="">Select Blood Type</option>
                     <option value="A+">A+</option>
@@ -270,16 +270,16 @@
                 </select>
             </div>
             
-            <div class="form-group">
+            <div class="group">
                 <input type="text" placeholder="Address/Location" name="address" required>
             </div>
             
-            <div class="file-upload">
+            <div class="upload">
                 <label>Upload ID for Verification</label>
                 <input type="file" accept=".jpg,.jpeg,.png,.pdf" name="id_proof" required>
             </div>
 
-            <div class="file-upload">
+            <div class="upload">
                 <label>Upload Latest Medical Test Report (In PDF Formar)</label>
                 <input type="file" accept=".pdf" name="test_proof" required>
             </div>

@@ -31,39 +31,39 @@
             z-index: 100;
         }
 
-        .nav-brand {
+        .brand {
             font-size: 1.5rem;
             font-weight: bold;
             color: #c73030;
         }
 
-        .nav-links {
+        .links {
             display: flex;
             gap: 2rem;
         }
 
-        .nav-links a {
+        .links a {
             text-decoration: none;
             color: #333;
             font-weight: 500;
             transition: color 0.3s ease;
         }
 
-        .nav-links a.active {
+        .links a.active {
             color: #c73030;
         }
 
-        .nav-links a:hover {
+        .links a:hover {
             color: #c73030;
         }
 
-        .user-info {
+        .info {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
 
-        .btn-logout {
+        .logout {
             background-color: #c73030;
             color: white;
             border: none;
@@ -73,7 +73,7 @@
             transition: background-color 0.3s ease;
         }
 
-        .btn-logout:hover {
+        .logout:hover {
             background-color: #a52525;
         }
 
@@ -82,21 +82,21 @@
             min-height: calc(100vh - 4rem);
         }
 
-        .main-content {
+        .main {
             flex: 1;
             padding: 2rem;
         }
 
-        .dashboard-header {
+        .mheader {
             margin-bottom: 2rem;
         }
 
-        .dashboard-header h1 {
+        .mheader h1 {
             color: #245E96;
             margin-bottom: 0.5rem;
         }
 
-        .table-container {
+        .container {
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -104,7 +104,7 @@
             margin-bottom: 2rem;
         }
 
-        .table-header {
+        .theader {
             padding: 1.5rem;
             border-bottom: 1px solid #e1e1e1;
             display: flex;
@@ -112,7 +112,7 @@
             align-items: center;
         }
 
-        .table-header h2 {
+        .theader h2 {
             color: #245E96;
         }
 
@@ -132,7 +132,7 @@
             color: #245E96;
             font-weight: 600;
         }
-        .btn-action {
+        .allbutton {
             padding: 5px 10px;
             border: none;
             border-radius: 4px;
@@ -141,12 +141,12 @@
             transition: background-color 0.3s ease;
         }
 
-        .btn-approve {
+        .approve {
             background-color: #4caf50;
             color: white;
         }
 
-        .btn-reject {
+        .reject {
             background-color: #f44336;
             color: white;
         }
@@ -154,26 +154,26 @@
 </head>
 <body>
     <nav>
-        <div class="nav-brand">BloodConnect Admin</div>
-        <div class="nav-links">
+        <div class="brand">BloodConnect Admin</div>
+        <div class="links">
             <a href="admin-dashboard.html" class="active">Dashboard</a>
             <a href="user-list.html">Users</a>
             <a href="hospital-list.html">Hospitals</a>
         </div>
-        <div class="user-info">
+        <div class="info">
             <span>Admin User</span>
-            <button class="btn-logout">Logout</button>
+            <button class="logout">Logout</button>
         </div>
     </nav>
 
-        <div class="main-content">
-            <div class="dashboard-header">
+        <div class="main">
+            <div class="mheader">
                 <h1>Admin Dashboard</h1>
                 <p>Manage donors, hospitals, and blood requests</p>
             </div>
 
-            <div class="table-container">
-                <div class="table-header">
+            <div class="container">
+                <div class="theader">
                     <h2>Pending Verifications</h2>
                 </div>
                 <table>
@@ -193,10 +193,10 @@
                             <td>Donor</td>
                             <td>john@example.com</td>
                             <td>2025-01-15</td>
-                            <td class="status-pending">Pending</td>
+                            <td class="pending">Pending</td>
                             <td>
-                                <button class="btn-action btn-approve">Approve</button>
-                                <button class="btn-action btn-reject">Reject</button>
+                                <button class="allbutton approve">Approve</button>
+                                <button class="allbutton reject">Reject</button>
                             </td>
                         </tr>
                         <tr>
@@ -204,10 +204,10 @@
                             <td>Hospital</td>
                             <td>kmc@example.com</td>
                             <td>2025-01-14</td>
-                            <td class="status-pending">Pending</td>
+                            <td class="pending">Pending</td>
                             <td>
-                                <button class="btn-action btn-approve">Approve</button>
-                                <button class="btn-action btn-reject">Reject</button>
+                                <button class="allbutton approve">Approve</button>
+                                <button class="allbutton reject">Reject</button>
                             </td>
                         </tr>
                         <tr>
@@ -215,18 +215,18 @@
                             <td>Donor</td>
                             <td>jane@example.com</td>
                             <td>2025-01-13</td>
-                            <td class="status-pending">Pending</td>
+                            <td class="pending">Pending</td>
                             <td>
-                                <button class="btn-action btn-approve">Approve</button>
-                                <button class="btn-action btn-reject">Reject</button>
+                                <button class="allbutton approve">Approve</button>
+                                <button class="allbutton reject">Reject</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="table-container">
-                <div class="table-header">
+            <div class="container">
+                <div class="theader">
                     <h2>Recent Blood Requests</h2>
                 </div>
                 <table>
@@ -247,7 +247,7 @@
                             <td>3</td>
                             <td>High</td>
                             <td>2025-01-15</td>
-                            <td class="status-pending">Active</td>
+                            <td class="pending">Active</td>
                         </tr>
                         <tr>
                             <td>Patan Hospital</td>
@@ -255,7 +255,7 @@
                             <td>2</td>
                             <td>Medium</td>
                             <td>2025-01-14</td>
-                            <td class="status-approved">Fulfilled</td>
+                            <td class="approved">Fulfilled</td>
                         </tr>
                     </tbody>
                 </table>

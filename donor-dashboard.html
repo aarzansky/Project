@@ -17,8 +17,6 @@
             color: #333;
             background-color: #f8f9fa;
         }
-
-        /* Navigation */
         nav {
             position: sticky;
             top: 0;
@@ -32,39 +30,39 @@
             z-index: 100;
         }
 
-        .nav-brand {
+        .brand {
             font-size: 1.5rem;
             font-weight: bold;
             color: #c73030;
         }
 
-        .nav-links {
+        .links {
             display: flex;
             gap: 2rem;
         }
 
-        .nav-links a {
+        .links a {
             text-decoration: none;
             color: #333;
             font-weight: 500;
             transition: color 0.3s ease;
         }
 
-        .nav-links a.active {
+        .links a.active {
             color: #c73030;
         }
 
-        .nav-links a:hover {
+        .links a:hover {
             color: #c73030;
         }
 
-        .user-info {
+        .info {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
 
-        .btn-logout {
+        .logout {
             background-color: #c73030;
             color: white;
             border: none;
@@ -74,27 +72,26 @@
             transition: background-color 0.3s ease;
         }
 
-        .btn-logout:hover {
+        .logout:hover {
             background-color: #a52525;
         }
 
-        /* Dashboard Layout */
         .dashboard {
             padding: 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .dashboard-header {
+        .mheader {
             margin-bottom: 2rem;
         }
 
-        .dashboard-header h1 {
+        .mheader h1 {
             color: #245E96;
             margin-bottom: 0.5rem;
         }
 
-        .welcome-card {
+        .welcome {
             background-color: white;
             padding: 1.5rem;
             border-radius: 10px;
@@ -105,12 +102,12 @@
             align-items: center;
         }
 
-        .donor-info h2 {
+        .info h2 {
             color: #245E96;
             margin-bottom: 0.5rem;
         }
 
-        .blood-badge {
+        .badge {
             background-color: #c73030;
             color: white;
             padding: 10px 20px;
@@ -119,28 +116,27 @@
             font-size: 1.2rem;
         }
 
-        /* Request Cards */
-        .section-title {
+        .stitle {
             color: #245E96;
             margin-bottom: 1rem;
             font-size: 1.5rem;
         }
 
-        .requests-grid {
+        .rcontainer {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .request-card {
+        .rcard{
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             overflow: hidden;
         }
 
-        .request-header {
+        .rheader {
             padding: 1rem 1.5rem;
             background-color: #245E96;
             color: white;
@@ -156,21 +152,21 @@
             font-size: 0.8rem;
         }
 
-        .request-body {
+        .request {
             padding: 1.5rem;
         }
 
-        .request-detail {
+        .rinfo {
             margin-bottom: 0.8rem;
             display: flex;
         }
 
-        .request-detail strong {
+        .rinfo strong {
             width: 120px;
             color: #245E96;
         }
 
-        .request-actions {
+        .rbuttons {
             padding: 1rem 1.5rem;
             border-top: 1px solid #e1e1e1;
             display: flex;
@@ -204,111 +200,111 @@
 </head>
 <body>
     <nav>
-        <div class="nav-brand">BloodConnect</div>
-        <div class="nav-links">
+        <div class="brand">BloodConnect</div>
+        <div class="links">
             <a href="#" class="active">Dashboard</a>
             <a href="#">My Profile</a>
             <a href="#">Donation History</a>
         </div>
-        <div class="user-info">
+        <div class="info">
             <span>John Doe</span>
-            <button class="btn-logout">Logout</button>
+            <button class="logout">Logout</button>
         </div>
     </nav>
 
     <div class="dashboard">
-        <div class="dashboard-header">
+        <div class="mheader">
             <h1>Donor Dashboard</h1>
             <p>View blood requests and help save lives</p>
         </div>
 
-        <div class="welcome-card">
-            <div class="donor-info">
+        <div class="welcome">
+            <div class="info">
                 <h2>Welcome back, John!</h2>
                 <p>Thank you for being a life-saver. Here are the current blood requests matching your blood type.</p>
             </div>
-            <div class="blood-badge">O+</div>
+            <div class="badge">O+</div>
         </div>
 
-        <h2 class="section-title">Matching Blood Requests</h2>
-        <div class="requests-grid">
-            <div class="request-card">
-                <div class="request-header">
+        <h2 class="stitle">Matching Blood Requests</h2>
+        <div class="rcontainer">
+            <div class="rcard">
+                <div class="rheader">
                     <h3>Emergency: O+ Blood Needed</h3>
                     <span class="request-urgency">URGENT</span>
                 </div>
-                <div class="request-body">
-                    <div class="request-detail">
+                <div class="request">
+                    <div class="rinfo">
                         <strong>Hospital:</strong> Kathmandu Medical College
                     </div>
-                    <div class="request-detail">
+                    <div class="rinfo">
                         <strong>Location:</strong> Sinamangal, Kathmandu
                     </div>
-                    <div class="request-detail">
+                    <div class="rinfo">
                         <strong>Units Needed:</strong> 3
                     </div>
-                    <div class="request-detail">
+                    <div class="rinfo">
                         <strong>Contact:</strong> 01-1234567
                     </div>
-                    <div class="request-detail">
+                    <div class="rinfo">
                         <strong>Posted:</strong> 2 hours ago
                     </div>
                 </div>
-                <div class="request-actions">
+                <div class="rbuttons">
                     <button class="btn-primary">I Can Donate</button>
                 </div>
             </div>
 
-            <div class="request-card">
-                <div class="request-header">
+            <div class="rcard">
+                <div class="rheader">
                     <h3>O+ Blood Required</h3>
                     <span class="request-urgency">MEDIUM</span>
                 </div>
-                <div class="request-body">
-                    <div class="request-detail">
+                <div class="request">
+                    <div class="rinfo">
                         <strong>Hospital:</strong> Bir Hospital
                     </div>
-                    <div class="request-detail">
+                    <div class="rinfo">
                         <strong>Location:</strong> Kantipath, Kathmandu
                     </div>
-                    <div class="request-detail">
+                    <div class="rinfo">
                         <strong>Units Needed:</strong> 2
                     </div>
-                    <div class="request-detail">
+                    <div class="rinfo">
                         <strong>Contact:</strong> 01-7654321
                     </div>
-                    <div class="request-detail">
+                    <div class="rinfo">
                         <strong>Posted:</strong> 5 hours ago
                     </div>
                 </div>
-                <div class="request-actions">
+                <div class="rbuttons">
                     <button class="btn-primary">I Can Donate</button>
                 </div>
             </div>
 
-            <div class="request-card">
-                <div class="request-header">
+            <div class="rcard">
+                <div class="rheader">
                     <h3>B+ Blood Needed</h3>
                     <span class="request-urgency">LOW</span>
                 </div>
-                <div class="request-body">
-                    <div class="request-detail">
+                <div class="request">
+                    <div class="rinfo">
                         <strong>Hospital:</strong> Teaching Hospital
                     </div>
-                    <div class="request-detail">
+                    <div class="rinfo">
                         <strong>Location:</strong> Maharajgunj, Kathmandu
                     </div>
-                    <div class="request-detail">
+                    <div class="rinfo">
                         <strong>Units Needed:</strong> 1
                     </div>
-                    <div class="request-detail">
+                    <div class="rinfo">
                         <strong>Contact:</strong> 01-5555555
                     </div>
-                    <div class="request-detail">
+                    <div class="rinfo">
                         <strong>Posted:</strong> 1 day ago
                     </div>
                 </div>
-                <div class="request-actions">
+                <div class="rbuttons">
                     <button class="btn-disabled">Not Your Type</button>
                 </div>
             </div>
