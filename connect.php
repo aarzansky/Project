@@ -1,11 +1,12 @@
 <?php
-$host="localhost";
-$username="root";
-$pass="";
-$db="project";
-$conn=mysqli_connect($host,$username,$pass,$db);
-if(!$conn)
-{
-    echo die("Database connection failed");
+$host = "localhost";
+$username = "root";
+$password = "";  
+$db = "project";
+
+$conn = mysqli_connect($host, $username, $password, $db,);
+
+if(!$conn){
+    die("Database connection failed: " . mysqli_connect_error());
 }
 ?>
