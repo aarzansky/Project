@@ -93,3 +93,11 @@ CREATE TABLE donor_responses (
     FOREIGN KEY (request_id) REFERENCES blood_requests(request_id),
     FOREIGN KEY (donor_id) REFERENCES donors(donor_id)
 );
+
+ALTER TABLE blood_requests 
+ADD COLUMN hospital_id INT,
+ADD FOREIGN KEY (hospital_id) REFERENCES hospitals(hospital_id);
+
+UPDATE blood_requests 
+SET hospital_id = (SELECT hospital_id FROM hospitals LIMIT 1) 
+WHERE hospital_id IS NULL;

@@ -2,8 +2,9 @@
 session_start();
 include 'connect.php';
 
-if(!isset($_SESSION['admin'])) {
-    header('Location:login.php');
+// Check if admin is logged in
+if(!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
+    header('Location: login.php');
     exit();
 }
 
@@ -33,68 +34,90 @@ $donors = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Approval</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>Admin - Pending Donor Approvals</h2>
+     <nav>
+        <div class="brand">BloodConnect Hospital</div>
+        <div class="links">
+            <a href="hospital-dashboard.php">Dashboard</a>
+            <a href="admin-approve.php" class="active">Pending Users</a>
+            <a href="donor-response.php">Responses</a>
+            <a href="manage_users.php">Manage Users</a>
+        </div>
+        <div class="uinfo">
+            <span>Admin Panel</span>
+            <a href="logout.php"><button class="logout">Logout</button></a>
+        </div>
+    </nav>    
     
-    <a href="hospital-dashboard.php">← Back to Dashboard</a>
-    <a href="logout.php" style="float:right;">Logout</a>
-    
-    <?php if(isset($success)) echo "<p style='color:green;'>$success</p>"; ?>
-    
-    <?php if(empty($donors)): ?>
-        <p>No pending donors to review.</p>
-    <?php else: ?>
-        <table border="1" cellpadding="10" cellspacing="0" width="100%">
-            <tr style="background:#245E96;color:white;">
-                <th>Name</th>
-                <th>Blood Type</th>
-                <th>Contact</th>
-                <th>Address</th>
-                <th>Last Donation</th>
-                <th>Documents</th>
-                <th>Actions</th>
-            </tr>
-            
-            <?php foreach($donors as $donor): ?>
-            <tr>
-                <td><?php echo htmlspecialchars($donor['full_name']); ?></td>
-                <td style="text-align:center;">
-                    <span style="background:#c73030;color:white;padding:5px 10px;border-radius:10px;">
-                        <?php echo htmlspecialchars($donor['blood_type']); ?>
-                    </span>
-                </td>
-                <td>
-                    <?php echo htmlspecialchars($donor['email']); ?><br>
-                    <?php echo htmlspecialchars($donor['phone_number']); ?>
-                </td>
-                <td><?php echo htmlspecialchars($donor['address']); ?></td>
-                <td><?php echo htmlspecialchars($donor['lastdonation']); ?></td>
-                <td>
-                    <?php if(!empty($donor['id_proof'])): ?>
-                        <a href="<?php echo $donor['id_proof']; ?>" target="_blank">ID Proof</a><br>
-                    <?php endif; ?>
-                    <?php if(!empty($donor['medical_history'])): ?>
-                        <a href="<?php echo $donor['medical_history']; ?>" target="_blank">Medical Report</a>
-                    <?php endif; ?>
-                </td>
-                <td>
-                    <form method="POST" style="display:inline;">
-                        <input type="hidden" name="donor_id" value="<?php echo $donor['donor_id']; ?>">
-                        <button type="submit" name="approve" style="background:#28a745;color:white;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;">
-                            ✓ Approve
-                        </button>
-                    </form>
-                    <form method="POST" style="display:inline;">
-                        <input type="hidden" name="donor_id" value="<?php echo $donor['donor_id']; ?>">
-                        <button type="submit" name="reject" style="background:#dc3545;color:white;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;">
-                            ✗ Reject
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-    <?php endif; ?>
+    <div class="dashboard">
+        <div class="header">
+            <h1>Pending Donor Approvals</h1>
+            <p>Review and approve new donor registrations</p>
+        </div>
+        
+        <?php if(isset($success)): ?>
+            <div class="alert success"><?php echo $success; ?></div>
+        <?php endif; ?>
+        
+        <?php if(empty($donors)): ?>
+            <div class="no-requests">
+                <p>No pending donors to review.</p>
+            </div>
+        <?php else: ?>
+            <table class="container">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Blood Type</th>
+                        <th>Contact</th>
+                        <th>Address</th>
+                        <th>Last Donation</th>
+                        <th>Documents</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($donors as $donor): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($donor['full_name']); ?></td>
+                        <td style="text-align:center;">
+                            <span class="bloodtype"><?php echo htmlspecialchars($donor['blood_type']); ?></span>
+                        </td>
+                        <td>
+                            <?php echo htmlspecialchars($donor['email']); ?><br>
+                            <?php echo htmlspecialchars($donor['phone_number']); ?>
+                        </td>
+                        <td><?php echo htmlspecialchars($donor['address']); ?></td>
+                        <td><?php echo htmlspecialchars($donor['lastdonation']); ?></td>
+                        <td>
+                            <?php if(!empty($donor['id_proof'])): ?>
+                                <a href="<?php echo $donor['id_proof']; ?>" target="_blank">View ID Proof</a><br>
+                            <?php endif; ?>
+                            <?php if(!empty($donor['medical_history'])): ?>
+                                <a href="<?php echo $donor['medical_history']; ?>" target="_blank">View Medical Report</a>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <form method="POST" style="display:inline;">
+                                <input type="hidden" name="donor_id" value="<?php echo $donor['donor_id']; ?>">
+                                <button type="submit" name="approve" class="approve">
+                                    ✓ Approve
+                                </button>
+                            </form>
+                            <form method="POST" style="display:inline;">
+                                <input type="hidden" name="donor_id" value="<?php echo $donor['donor_id']; ?>">
+                                <button type="submit" name="reject" class="reject">
+                                    ✗ Reject
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </div>
 </body>
 </html>

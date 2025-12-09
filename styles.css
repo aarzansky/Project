@@ -125,13 +125,13 @@ button, .allbutton, .btn {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.theader, .table-header {
+.theader, .brequest {
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid #eee;
 }
 
-.theader h2, .table-header h2 {
+.theader h2, .brequest h2 {
     color: #333;
 }
 
@@ -220,7 +220,7 @@ tr:hover {
     flex-direction: column;
 }
 
-.fgroup label {
+.frow label {
     margin-bottom: 0.5rem;
     font-weight: bold;
     color: #495057;
@@ -233,12 +233,6 @@ tr:hover {
     font-size: 1rem;
 }
 
-.fgroup textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-/* Alert Styles */
 .alert {
     padding: 1rem;
     border-radius: 4px;
@@ -257,7 +251,6 @@ tr:hover {
     border: 1px solid #f5c6cb;
 }
 
-/* Login and Register Styles */
 .login, .container {
     max-width: 500px;
     margin: 2rem auto;
@@ -328,7 +321,6 @@ tr:hover {
     width: 100%;
 }
 
-/* Footer Styles */
 footer {
     text-align: center;
     padding: 2rem;
