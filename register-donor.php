@@ -7,6 +7,15 @@
         $phone = $_POST['phone_number'];
         $type = $_POST['blood_type'];
         $address = $_POST['address'];
+        $lastdonation = $_POST['lastdonation'];
+
+        $today = date("Y-m-d");
+        if ($lastdonation > $today) 
+        {
+        echo "<script>alert('Last donation date cannot be in the future!'); window.history.back();</script>";
+        exit(0);
+        }
+
         
         $id_file=$_FILES['id_proof'];
         $id_filename=$id_file['name'];
@@ -24,8 +33,8 @@
 
         $password=md5($_POST['password']);
 
-        $sql="INSERT INTO donors(full_name,email,phone_number,blood_type,address,medical_history,id_proof,password)
-        VALUES('$name','$email','$phone','$type','$address','$test_folder','$id_folder','$password');";
+        $sql="INSERT INTO donors(full_name,email,phone_number,blood_type,address,lastdonation,medical_history,id_proof,password)
+        VALUES('$name','$email','$phone','$type','$address','$lastdonation','$test_folder','$id_folder','$password');";
         $result=mysqli_query($conn,$sql);
         if($result)
             {
@@ -45,181 +54,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register as Donor - Blood Donor Management System</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f8f9fa;
-        }
-
-        nav {
-            position: sticky;
-            top: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: white;
-            height: 4rem;
-            padding: 0 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            z-index: 100;
-        }
-
-        .Links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .Links a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .Links a:hover {
-            color: #c73030;
-        }
-
-        .Registration {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .Registration a {
-            text-decoration: none;
-            border: 2px solid #c73030;
-            border-radius: 50px;
-            color: #c73030;
-            padding: 8px 20px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .Registration a:hover {
-            background-color: #c73030;
-            color: white;
-        }
-
-        .container {
-            max-width: 500px;
-            margin: 3rem auto;
-            padding: 2.5rem;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .container h2 {
-            color: #245E96;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2rem;
-        }
-
-        .group {
-            margin-bottom: 1.5rem;
-        }
-
-        .group label {
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
             display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 500;
         }
-
-        .group input,
-        .group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e1e1e1;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
+        input:invalid, select:invalid {
+            border-color: #ff4444 !important;
         }
-
-        .group input:focus,
-        .group select:focus {
-            outline: none;
-            border-color: #245E96;
-        }
-
-        .upload {
-            margin: 1.5rem 0;
-            padding: 1.5rem;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            border: 2px dashed #e1e1e1;
-        }
-
-        .upload label {
-            display: block;
-            margin-bottom: 1rem;
-            color: #245E96;
-            font-weight: 500;
-        }
-
-        .upload input {
-            border: none;
-            padding: 0;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            display: block;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background-color: #c73030;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #a52525;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(199, 48, 48, 0.3);
-        }
-
-        .container p {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: #666;
-        }
-
-        .container a {
-            color: #245E96;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .container a:hover {
-            color: #c73030;
-            text-decoration: underline;
-        }
-
-        footer {
-            background-color: #c73030;
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            margin-top: 3rem;
+        input:valid, select:valid {
+            border-color: #00C851 !important;
         }
     </style>
 </head>
@@ -227,12 +74,11 @@
     <nav>
         <div class="Links">
             <a href="index.html">Home</a>
-            <a href="login.html">Login</a>
+            <a href="login.php">Login</a>
             <a href="register-donor.html" style="color: #c73030;">Become Donor</a>
-            <a href="register-hospital.html">Hospital Registration</a>
         </div>
         <div class="Registration">
-            <a href="login.html">Login</a>
+            <a href="login.php">Login</a>
             <a href="register-donor.html">Sign Up</a>
         </div>
     </nav>
@@ -241,23 +87,35 @@
         <h2>Become a Blood Donor</h2>
         <form id="donorRegisterForm" method="POST" enctype="multipart/form-data">
             <div class="group">
-                <input type="text" placeholder="Full Name" name="full_name"required>
+                <input type="text" placeholder="Full Name" name="full_name" required 
+                       minlength="3" maxlength="50" pattern="[A-Za-z\s]{3,}"
+                       title="Enter your full name (letters and spaces only, minimum 3 characters)">
+                <small class="error-message">Must be 3-50 letters and spaces only</small>
             </div>
             
             <div class="group">
-                <input type="email" placeholder="Email" name="email" required>
+                <input type="email" placeholder="Email" name="email" required 
+                       maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                       title="Enter a valid email address (e.g., user@example.com)">
+                <small class="error-message">Enter a valid email address</small>
             </div>
 
             <div class="group">
-                <input type="password" placeholder="password" name="password" required>
+                <input type="password" placeholder="Password" name="password" required 
+                       minlength="6" maxlength="20" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,20}$"
+                       title="Password must be 6-20 characters with at least one letter and one number">
+                <small class="error-message">6-20 characters with letters and numbers</small>
             </div>
             
             <div class="group">
-                <input type="tel" placeholder="Phone Number" name="phone_number" required>
+                <input type="tel" placeholder="Phone Number" name="phone_number" required 
+                       pattern="[0-9]{10}" maxlength="10" minlength="10"
+                       title="Enter 10-digit phone number (e.g., 9841123456)">
+                <small class="error-message">10-digit number required</small>
             </div>
             
             <div class="group">
-                <select required name="blood_type">
+                <select required name="blood_type" title="Select your blood type">
                     <option value="">Select Blood Type</option>
                     <option value="A+">A+</option>
                     <option value="A-">A-</option>
@@ -268,26 +126,42 @@
                     <option value="O+">O+</option>
                     <option value="O-">O-</option>
                 </select>
+                <small class="error-message">Please select your blood type</small>
             </div>
             
             <div class="group">
-                <input type="text" placeholder="Address/Location" name="address" required>
+                <input type="text" placeholder="Address/Location" name="address" required 
+                       minlength="5" maxlength="200"
+                       title="Enter your complete address">
+                <small class="error-message">Address must be 5-200 characters</small>
+            </div>
+
+            <div class="group">
+                <label for="lastdonation">Last Donated</label>
+                <input type="date" name="lastdonation" required 
+                       max="<?php echo date('Y-m-d'); ?>"
+                       title="Select date of your last blood donation (cannot be future date)">
+                <small class="error-message">Cannot select future date</small>
             </div>
             
             <div class="upload">
                 <label>Upload ID for Verification</label>
-                <input type="file" accept=".jpg,.jpeg,.png,.pdf" name="id_proof" required>
+                <input type="file" accept=".jpg,.jpeg,.png,.pdf" name="id_proof" required 
+                       title="Upload government ID (JPG, PNG, or PDF)">
+                <small>Accepted: JPG, PNG, PDF (Max 5MB)</small>
             </div>
 
             <div class="upload">
-                <label>Upload Latest Medical Test Report (In PDF Formar)</label>
-                <input type="file" accept=".pdf" name="test_proof" required>
+                <label>Upload Latest Medical Test Report (In PDF Format)</label>
+                <input type="file" accept=".pdf" name="test_proof" required 
+                       title="Upload medical test report (PDF only)">
+                <small>Only PDF files (Max 5MB)</small>
             </div>
             
-            <button type="submit" class="btn btn-primary" name="submit">Register for Verification</button>
+            <button type="submit" name="submit">Register for Verification</button>
         </form>
         
-        <p>Already registered? <a href="login.html">Login here</a></p>
+        <p>Already registered? <a href="login.php">Login here</a></p>
     </div>
 
     <footer>

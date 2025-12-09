@@ -1,0 +1,424 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+nav {
+    background: #dc3545;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.links {
+    display: flex;
+    gap: 2rem;
+}
+
+.links a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.links a:hover, .links a.active {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.info, .uinfo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+button, .allbutton, .btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.logout {
+    background: #c82333;
+    color: white;
+}
+
+.logout:hover {
+    background: #a71e2a;
+}
+
+.approve {
+    background: #28a745;
+    color: white;
+}
+
+.approve:hover {
+    background: #218838;
+}
+
+.reject {
+    background: #dc3545;
+    color: white;
+}
+
+.reject:hover {
+    background: #c82333;
+}
+
+.btn {
+    background: #007bff;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+.btn:hover {
+    background: #0056b3;
+}
+
+.main, .dashboard {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.mheader, .header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.mheader h1, .header h1 {
+    color: #dc3545;
+    margin-bottom: 0.5rem;
+}
+
+.mheader p, .header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.container {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.theader, .table-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eee;
+}
+
+.theader h2, .table-header h2 {
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th, td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #495057;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+.pending {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.approved {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.welcome {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.badge {
+    background: #dc3545;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.rcontainer {
+    display: grid;
+    gap: 1rem;
+}
+
+.rcard {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-left: 4px solid #007bff;
+}
+
+.rcard.urgent {
+    border-left-color: #dc3545;
+}
+
+.rcard.high {
+    border-left-color: #fd7e14;
+}
+
+.rcard.medium {
+    border-left-color: #ffc107;
+}
+
+.rcard.low {
+    border-left-color: #28a745;
+}
+
+.rheader h3 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.rdetail {
+    margin-bottom: 0.5rem;
+}
+
+.ractions {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.fcard {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.fcard h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.frow {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.fgroup {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.fgroup label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #495057;
+}
+
+.fgroup input, .fgroup select, .fgroup textarea {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.fgroup textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Alert Styles */
+.alert {
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.alert.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Login and Register Styles */
+.login, .container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.login h1, .container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #dc3545;
+}
+
+.group {
+    margin-bottom: 1.5rem;
+}
+
+.group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #495057;
+}
+
+.group input, .group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.submit {
+    width: 100%;
+    padding: 0.75rem;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit:hover {
+    background: #c82333;
+}
+
+.registerlink {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.upload {
+    margin-bottom: 1.5rem;
+}
+
+.upload label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #495057;
+}
+
+.upload input {
+    width: 100%;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 2rem;
+    background: #343a40;
+    color: white;
+}
+
+.stitle {
+    margin: 2rem 0 1rem 0;
+    color: #333;
+}
+
+.no-requests {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+.contact-info {
+    font-style: italic;
+    color: #666;
+}
+
+.urgency, .status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.urgency.urgent, .status.pending {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.urgency.high {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.urgency.medium {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.urgency.low, .status.approved {
+    background: #d4edda;
+    color: #155724;
+}
