@@ -18,10 +18,24 @@ if(isset($_POST['submit_request'])) {
     $sql = "INSERT INTO blood_requests (blood_type, units, urgency, additional_notes) 
             VALUES ('$blood_type', '$units', '$urgency', '$additional_notes')";
     
-    if(mysqli_query($conn, $sql)) {
-        $success_message = "Blood request posted successfully!";
+    $sql2 = "SELECT * FROM donors WHERE blood_type='$blood_type'";
+    $result2 = mysqli_query($conn, $sql2);
+
+    if ($result2 && mysqli_num_rows($result2) > 0) {
+
+        while ($row = mysqli_fetch_assoc($result2)) {
+
+            $donor_email = $row['email'];
+            $subject = "ALERT! Blood Required";
+            $header = "From: aarzanstudy@gmail.com";
+            $message = "Hello " . $row['full_name'] . ", 
+            This is Hospital requesting you for a blood donation. 
+            We urgently need blood and you are a suitable donor. 
+            Please check our site to respond.";
+            $mail = mail($donor_email, $subject, $message, $header);
+        }
     } else {
-        $error_message = "Error posting request: " . mysqli_error($conn);
+        $mail = false;
     }
 }
 
@@ -56,8 +70,9 @@ if($result && mysqli_num_rows($result) == 1) {
         <div class="brand">BloodConnect Hospital</div>
         <div class="links">
             <a href="#" class="active">Dashboard</a>
-            <a href="hospital-profile.php">Hospital Profile</a>
-            <a href="request-history.php">Request History</a>
+            <a href="admin-approve.php">Pending Users</a>
+            <a href="donor-response.php">Responses</a>
+            <a href="manage_users.php">Manage Users</a>
         </div>
         <div class="uinfo">
             <span><?php echo htmlspecialchars($hospital_name); ?></span>
@@ -70,7 +85,13 @@ if($result && mysqli_num_rows($result) == 1) {
             <h1>Hospital Dashboard</h1>
             <p>Manage blood requests and connect with donors</p>
         </div>
-
+       <?php if (isset($mail)) { ?>
+        <?php if ($mail) { ?>
+        <div class="alert success">Mail sent successfully</div>
+        <?php } else { ?>
+        <div class="alert error">Mail unsuccessful</div>
+        <?php } ?>
+        <?php } ?>
         <?php if(isset($success_message)): ?>
             <div class="alert success"><?php echo $success_message; ?></div>
         <?php endif; ?>
