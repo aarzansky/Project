@@ -194,49 +194,6 @@ tr:hover {
     font-weight: bold;
 }
 
-.rcontainer {
-    display: grid;
-    gap: 1rem;
-}
-
-.rcard {
-    background: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    border-left: 4px solid #007bff;
-}
-
-.rcard.urgent {
-    border-left-color: #dc3545;
-}
-
-.rcard.high {
-    border-left-color: #fd7e14;
-}
-
-.rcard.medium {
-    border-left-color: #ffc107;
-}
-
-.rcard.low {
-    border-left-color: #28a745;
-}
-
-.rheader h3 {
-    color: #333;
-    margin-bottom: 1rem;
-}
-
-.rdetail {
-    margin-bottom: 0.5rem;
-}
-
-.ractions {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #eee;
-}
 
 .fcard {
     background: white;
