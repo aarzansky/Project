@@ -44,6 +44,7 @@ $donors = mysqli_fetch_all($result, MYSQLI_ASSOC);
             <a href="admin-approve.php" class="active">Pending Users</a>
             <a href="donor-response.php">Responses</a>
             <a href="manage_users.php">Manage Users</a>
+            <a href="manage_brequest.php">Manage Requests</a>
         </div>
         <div class="uinfo">
             <span>Admin Panel</span>

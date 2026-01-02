@@ -29,6 +29,7 @@ $result = mysqli_query($conn, $sql);
             <a href="admin-approve.php">Pending Users</a>
             <a href="donor-response.php">Responses</a>
             <a href="manage_users.php" class="active">Manage Users</a>
+            <a href="manage_brequest.php">Manage Requests</a>
         </div>
         <div class="uinfo">
             <span>Admin Panel</span>

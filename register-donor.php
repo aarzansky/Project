@@ -57,13 +57,13 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         .error-message {
-            color: red;
+            color: grey;
             font-size: 0.9rem;
             margin-top: 5px;
             display: block;
         }
         input:invalid, select:invalid {
-            border-color: #ff4444 !important;
+            border-color: #f58585ff !important;
         }
         input:valid, select:valid {
             border-color: #00C851 !important;
@@ -131,7 +131,7 @@
             
             <div class="group">
                 <input type="text" placeholder="Address/Location" name="address" required 
-                       minlength="5" maxlength="200"
+                        maxlength="200"
                        title="Enter your complete address">
                 <small class="error-message">Address must be 5-200 characters</small>
             </div>

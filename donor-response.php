@@ -76,6 +76,7 @@ if($responses_result) {
             <a href="admin-approve.php">Pending Users</a>
             <a href="donor-response.php" class="active">Responses</a>
             <a href="manage_users.php">Manage Users</a>
+            <a href="manage_brequest.php">Manage Requests</a>
         </div>
         <div class="uinfo">
             <span>Admin Panel</span>
@@ -89,7 +90,6 @@ if($responses_result) {
             <p>Manage donor responses to blood requests</p>
         </div>
         
-        <!-- Messages -->
         <?php if(isset($success_msg)): ?>
             <div class="alert success"><?php echo $success_msg; ?></div>
         <?php endif; ?>

@@ -6,7 +6,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-// Check if admin is logged in
 if(!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
     header('Location: login.php');
     exit();
@@ -124,6 +123,7 @@ if($request_result) {
             <a href="admin-approve.php">Pending Users</a>
             <a href="donor-response.php">Responses</a>
             <a href="manage_users.php">Manage Users</a>
+            <a href="manage_brequest.php">Manage Requests</a>
         </div>
         <div class="uinfo">
             <span><?php echo htmlspecialchars($hospital_name); ?></span>
