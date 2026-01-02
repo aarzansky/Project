@@ -2,7 +2,6 @@
 session_start();
 include 'connect.php';
 
-// Check if admin is logged in
 if(!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
     header('Location: login.php');
     exit();
@@ -11,7 +10,6 @@ if(!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
 $user_id = $_GET['id'] ?? 0;
 $message = '';
 
-// Get user data
 $sql = "SELECT * FROM donors WHERE donor_id = '$user_id'";
 $result = mysqli_query($conn, $sql);
 $user = mysqli_fetch_assoc($result);

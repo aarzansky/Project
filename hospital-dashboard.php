@@ -41,12 +41,10 @@ if(isset($_POST['submit_request'])) {
     if(mysqli_query($conn, $sql)) {
         $success_message = "Blood request posted successfully!";
         
-        // ========== ADD EMAIL NOTIFICATION CODE HERE ==========
         require 'PHPMailer/src/Exception.php';
         require 'PHPMailer/src/PHPMailer.php';
         require 'PHPMailer/src/SMTP.php';
         
-        // Get matching donors for this blood type
         $donor_sql = "SELECT email, full_name FROM donors WHERE blood_type = '$blood_type' AND verification_status = 'approved'";
         $donor_result = mysqli_query($conn, $donor_sql);
         
@@ -54,7 +52,6 @@ if(isset($_POST['submit_request'])) {
             $mail = new PHPMailer(true);
             
             try {
-                // SMTP Settings
                 $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
@@ -73,14 +70,14 @@ if(isset($_POST['submit_request'])) {
                 $mail->Subject = "Urgent: Blood Request for $blood_type";
                 $mail->Body    = "
                     <h3>Blood Donation Request</h3>
-                    <p><strong>Hospital:</strong> $hospital_name</p>
-                    <p><strong>Blood Type Needed:</strong> $blood_type</p>
-                    <p><strong>Units Required:</strong> $units</p>
-                    <p><strong>Urgency Level:</strong> " . ucfirst($urgency) . "</p>
-                    <p><strong>Additional Notes:</strong> " . htmlspecialchars($additional_notes) . "</p>
-                    <p><strong>Date Posted:</strong> " . date('F j, Y g:i A') . "</p>
+                    Hospital: $hospital_name<br>
+                    Blood Type Needed: $blood_type<br>
+                    Units Required: $units<br>
+                    Urgency Level:" . ucfirst($urgency) . "<br>
+                    Additional Notes: " . htmlspecialchars($additional_notes) . "<br>
+                    Date Posted: " . date('F j, Y g:i A') . "</p>
                     <br>
-                    <p>If you're able to donate, please log in to your account to respond to this request.</p>
+                    <p>If you're able to donate, please log in to your account to respond to this request.</p><br>
                     <p>Thank you for being a lifesaver!</p>
                 ";
                 
@@ -99,7 +96,6 @@ if(isset($_POST['submit_request'])) {
     }
 }
 
-// Get requests for this hospital
 $request_sql = "SELECT * FROM blood_requests WHERE hospital_id='$hospital_id' ORDER BY created_at DESC";
 $request_result = mysqli_query($conn, $request_sql);
 $requests = [];

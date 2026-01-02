@@ -21,53 +21,15 @@ if(isset($_POST['accept_response'])) {
     $sql = "UPDATE donor_responses SET response_status = 'accepted' WHERE response_id = '$response_id'";
     mysqli_query($conn, $sql);
     
-    // Count accepted responses for this request
-    $count_sql = "SELECT COUNT(*) as accepted_count FROM donor_responses 
-                 WHERE request_id = '$request_id' AND response_status = 'accepted'";
-    $count_result = mysqli_query($conn, $count_sql);
-    $count_data = mysqli_fetch_assoc($count_result);
-    $accepted_count = $count_data['accepted_count'];
-    
-    // Get total units needed
-    $units_sql = "SELECT units FROM blood_requests WHERE request_id = '$request_id'";
-    $units_result = mysqli_query($conn, $units_sql);
-    $units_data = mysqli_fetch_assoc($units_result);
-    $units_needed = $units_data['units'];
-    
-    // AUTO-FULFILLMENT: If accepted responses meet needed units, update status
-    if($accepted_count >= $units_needed) {
-        $update_sql = "UPDATE blood_requests SET status = 'fulfilled' WHERE request_id = '$request_id'";
-        mysqli_query($conn, $update_sql);
-        
-        // Also mark all accepted responses as completed
-        $complete_sql = "UPDATE donor_responses SET response_status = 'completed' 
-                        WHERE request_id = '$request_id' AND response_status = 'accepted'";
-        mysqli_query($conn, $complete_sql);
-    }
+    // Check for auto-fulfillment
+    checkAutoFulfillment($conn, $request_id);
     
     $success = "Response accepted!";
-    
-    // Refresh page
     header("Location: manage_requests.php");
     exit();
 }
 
-// Mark donor response as completed (for manual completion if needed)
-if(isset($_POST['complete_donation'])) {
-    $response_id = $_POST['response_id'];
-    
-    // Update response to completed
-    $sql = "UPDATE donor_responses SET response_status = 'completed' WHERE response_id = '$response_id'";
-    mysqli_query($conn, $sql);
-    
-    $success = "Donation marked as completed!";
-    
-    // Refresh page
-    header("Location: manage_requests.php");
-    exit();
-}
-
-// Manual status update (for cancelling or other reasons)
+// Manual status update
 if(isset($_POST['update_status'])) {
     $request_id = $_POST['request_id'];
     $status = $_POST['status'];
@@ -84,8 +46,44 @@ if(isset($_POST['update_status'])) {
                           AND response_status IN ('pending', 'accepted')";
             mysqli_query($conn, $update_sql);
         }
+        
+        // If manually marked as fulfilled, complete all accepted responses
+        if($status == 'fulfilled') {
+            $complete_sql = "UPDATE donor_responses 
+                            SET response_status = 'completed' 
+                            WHERE request_id = '$request_id' 
+                            AND response_status = 'accepted'";
+            mysqli_query($conn, $complete_sql);
+        }
     } else {
         $error = "Error updating status";
+    }
+}
+
+// Function to check and auto-fulfill requests
+function checkAutoFulfillment($conn, $request_id) {
+    // Count accepted responses
+    $count_sql = "SELECT COUNT(*) as accepted_count FROM donor_responses 
+                 WHERE request_id = '$request_id' AND response_status = 'accepted'";
+    $count_result = mysqli_query($conn, $count_sql);
+    $count_data = mysqli_fetch_assoc($count_result);
+    $accepted_count = $count_data['accepted_count'];
+    
+    // Get total units needed
+    $units_sql = "SELECT units, status FROM blood_requests WHERE request_id = '$request_id'";
+    $units_result = mysqli_query($conn, $units_sql);
+    $units_data = mysqli_fetch_assoc($units_result);
+    $units_needed = $units_data['units'];
+    
+    // Auto-fulfill if reached units and still active
+    if($accepted_count >= $units_needed && $units_data['status'] == 'active') {
+        $update_sql = "UPDATE blood_requests SET status = 'fulfilled' WHERE request_id = '$request_id'";
+        mysqli_query($conn, $update_sql);
+        
+        // Mark all accepted as completed
+        $complete_sql = "UPDATE donor_responses SET response_status = 'completed' 
+                        WHERE request_id = '$request_id' AND response_status = 'accepted'";
+        mysqli_query($conn, $complete_sql);
     }
 }
 
@@ -101,41 +99,6 @@ $requests = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Blood Requests</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .request-details {
-            background: #f8f9fa;
-            padding: 15px;
-            margin-top: 10px;
-            border-left: 4px solid #c73030;
-        }
-        .donor-response {
-            background: white;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 4px;
-            border-left: 3px solid #ddd;
-        }
-        .response-completed {
-            border-left-color: #28a745;
-            background: #f8fff8;
-        }
-        .response-accepted {
-            border-left-color: #ffc107;
-            background: #fffdf5;
-        }
-        .response-pending {
-            border-left-color: #6c757d;
-            background: #f8f9fa;
-        }
-        .fulfilled-badge {
-            background: #28a745;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
     <nav>
@@ -156,7 +119,7 @@ $requests = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <div class="dashboard">
         <div class="header">
             <h1>Manage Blood Requests</h1>
-            <p>Accept donor responses and track fulfillment</p>
+            <p>Update status and track fulfillment</p>
         </div>
         
         <?php if($success): ?>
@@ -180,12 +143,13 @@ $requests = mysqli_fetch_all($result, MYSQLI_ASSOC);
                         <th>Units</th>
                         <th>Urgency</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th>Date</th>
+                        <th>Update Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach($requests as $request): 
-                        // Get accepted donations count (each accepted response = 1 unit)
+                        // Get accepted donations count
                         $accepted_sql = "SELECT COUNT(*) as accepted FROM donor_responses 
                                          WHERE request_id = '{$request['request_id']}' 
                                          AND response_status = 'accepted'";
@@ -193,22 +157,27 @@ $requests = mysqli_fetch_all($result, MYSQLI_ASSOC);
                         $accepted_data = mysqli_fetch_assoc($accepted_result);
                         $accepted_count = $accepted_data['accepted'];
                         
-                        // Check if request is auto-fulfilled
-                        $is_fulfilled = ($accepted_count >= $request['units']) && $request['status'] == 'active';
-                        if($is_fulfilled) {
-                            // Auto-update status if not already updated
-                            $update_sql = "UPDATE blood_requests SET status = 'fulfilled' WHERE request_id = '{$request['request_id']}'";
-                            mysqli_query($conn, $update_sql);
-                            $request['status'] = 'fulfilled';
+                        // Auto-check fulfillment on page load
+                        if($request['status'] == 'active') {
+                            checkAutoFulfillment($conn, $request['request_id']);
+                            // Refresh request data if status changed
+                            if($accepted_count >= $request['units']) {
+                                $refresh_sql = "SELECT status FROM blood_requests WHERE request_id = '{$request['request_id']}'";
+                                $refresh_result = mysqli_query($conn, $refresh_sql);
+                                $refreshed = mysqli_fetch_assoc($refresh_result);
+                                $request['status'] = $refreshed['status'];
+                            }
                         }
                     ?>
                     <tr>
-                        <td><strong>#<?php echo $request['request_id']; ?></strong></td>
-                        <td><span class="bloodtype"><?php echo $request['blood_type']; ?></span></td>
+                        <td>#<?php echo $request['request_id']; ?></td>
+                        <td>
+                            <span class="bloodtype"><?php echo $request['blood_type']; ?></span>
+                        </td>
                         <td>
                             <?php echo $accepted_count; ?>/<?php echo $request['units']; ?>
                             <?php if($accepted_count >= $request['units'] && $request['status'] == 'fulfilled'): ?>
-                                <span class="fulfilled-badge">✓ Fulfilled</span>
+                                <br><small style="color: #28a745;">✓ Fulfilled</small>
                             <?php endif; ?>
                         </td>
                         <td>
@@ -221,118 +190,19 @@ $requests = mysqli_fetch_all($result, MYSQLI_ASSOC);
                                 <?php echo ucfirst($request['status']); ?>
                             </span>
                         </td>
+                        <td><?php echo date('M j', strtotime($request['created_at'])); ?></td>
                         <td>
-                            <?php if($request['status'] == 'active'): ?>
-                                <a href="manage_requests.php?view=<?php echo $request['request_id']; ?>#request-<?php echo $request['request_id']; ?>" 
-                                   style="color: #c73030; text-decoration: none;">
-                                    Manage Donors
-                                </a>
-                            <?php else: ?>
-                                <a href="manage_requests.php?view=<?php echo $request['request_id']; ?>#request-<?php echo $request['request_id']; ?>" 
-                                   style="color: #666; text-decoration: none;">
-                                    View Details
-                                </a>
-                            <?php endif; ?>
+                            <form method="POST">
+                                <input type="hidden" name="request_id" value="<?php echo $request['request_id']; ?>">
+                                <select name="status" onchange="this.form.submit()" style="padding: 5px;">
+                                    <option value="active" <?php echo $request['status'] == 'active' ? 'selected' : ''; ?>>Active</option>
+                                    <option value="fulfilled" <?php echo $request['status'] == 'fulfilled' ? 'selected' : ''; ?>>Fulfilled</option>
+                                    <option value="cancelled" <?php echo $request['status'] == 'cancelled' ? 'selected' : ''; ?>>Cancelled</option>
+                                </select>
+                                <input type="hidden" name="update_status" value="1">
+                            </form>
                         </td>
                     </tr>
-                    
-                    <?php 
-                    // Show details if this request is being viewed
-                    if(isset($_GET['view']) && $_GET['view'] == $request['request_id']): 
-                        // Get all responses for this request
-                        $responses_sql = "SELECT * FROM donor_responses 
-                                         WHERE request_id = '{$request['request_id']}' 
-                                         ORDER BY response_date DESC";
-                        $responses_result = mysqli_query($conn, $responses_sql);
-                        $responses = mysqli_fetch_all($responses_result, MYSQLI_ASSOC);
-                    ?>
-                    <tr id="request-<?php echo $request['request_id']; ?>">
-                        <td colspan="6" style="padding: 0;">
-                            <div class="request-details">
-                                <h4>Request #<?php echo $request['request_id']; ?> Details:</h4>
-                                <p><strong>Created:</strong> <?php echo date('M j, Y g:i A', strtotime($request['created_at'])); ?></p>
-                                <?php if(!empty($request['additional_notes'])): ?>
-                                    <p><strong>Notes:</strong> <?php echo htmlspecialchars($request['additional_notes']); ?></p>
-                                <?php endif; ?>
-                                
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
-                                    <h4 style="margin: 0;">Donor Responses (<?php echo count($responses); ?>):</h4>
-                                    <?php if($request['status'] == 'active'): ?>
-                                        <form method="POST" style="display:inline;">
-                                            <input type="hidden" name="request_id" value="<?php echo $request['request_id']; ?>">
-                                            <select name="status" onchange="this.form.submit()" style="padding: 5px;">
-                                                <option value="">Cancel Request</option>
-                                                <option value="cancelled">Cancel This Request</option>
-                                            </select>
-                                            <input type="hidden" name="update_status" value="1">
-                                        </form>
-                                    <?php endif; ?>
-                                </div>
-                                
-                                <?php if(empty($responses)): ?>
-                                    <p>No responses yet.</p>
-                                <?php else: ?>
-                                    <?php foreach($responses as $response): 
-                                        // Get donor info
-                                        $donor_sql = "SELECT full_name, phone_number, email FROM donors WHERE donor_id = '{$response['donor_id']}'";
-                                        $donor_result = mysqli_query($conn, $donor_sql);
-                                        $donor = mysqli_fetch_assoc($donor_result);
-                                    ?>
-                                    <div class="donor-response response-<?php echo $response['response_status']; ?>">
-                                        <div style="display: flex; justify-content: space-between; align-items: start;">
-                                            <div>
-                                                <strong><?php echo htmlspecialchars($donor['full_name'] ?? 'Unknown'); ?></strong>
-                                                <br>
-                                                <small>Phone: <?php echo htmlspecialchars($donor['phone_number'] ?? 'N/A'); ?></small>
-                                                <br>
-                                                <small>Email: <?php echo htmlspecialchars($donor['email'] ?? 'N/A'); ?></small>
-                                            </div>
-                                            <div style="text-align: right;">
-                                                <span class="status <?php echo $response['response_status']; ?>">
-                                                    <?php echo ucfirst($response['response_status']); ?>
-                                                </span>
-                                                <br>
-                                                <small><?php echo date('M j, Y g:i A', strtotime($response['response_date'])); ?></small>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Action buttons -->
-                                        <?php if($response['response_status'] == 'pending' && $request['status'] == 'active'): ?>
-                                            <form method="POST" style="margin-top: 10px;">
-                                                <input type="hidden" name="response_id" value="<?php echo $response['response_id']; ?>">
-                                                <input type="hidden" name="request_id" value="<?php echo $request['request_id']; ?>">
-                                                <button type="submit" name="accept_response" class="approve" style="padding: 5px 15px;">
-                                                    ✓ Accept Donor (Counts as 1 unit)
-                                                </button>
-                                            </form>
-                                        <?php elseif($response['response_status'] == 'accepted' && $request['status'] == 'active'): ?>
-                                            <div style="margin-top: 10px;">
-                                                <span style="color: #28a745; font-weight: bold;">✓ Accepted (1 unit secured)</span>
-                                                <form method="POST" style="display:inline; margin-left: 10px;">
-                                                    <input type="hidden" name="response_id" value="<?php echo $response['response_id']; ?>">
-                                                    <button type="submit" name="complete_donation" class="approve" style="padding: 3px 10px; font-size: 0.9rem;">
-                                                        Mark Donated
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        <?php elseif($response['response_status'] == 'completed'): ?>
-                                            <p style="color: #28a745; margin-top: 5px; font-weight: bold;">
-                                                ✓ Donation completed successfully
-                                            </p>
-                                        <?php endif; ?>
-                                    </div>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                                
-                                <p style="margin-top: 15px; text-align: center;">
-                                    <a href="manage_requests.php" style="color: #666; text-decoration: none;">
-                                        ← Back to all requests
-                                    </a>
-                                </p>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endif; ?>
                     <?php endforeach; ?>
                 </tbody>
             </table>
