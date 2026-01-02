@@ -16,7 +16,6 @@ $sql = "SELECT * FROM donors WHERE donor_id = '$user_id'";
 $result = mysqli_query($conn, $sql);
 $user = mysqli_fetch_assoc($result);
 
-// Update user
 if(isset($_POST['updateuser'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
